@@ -1,89 +1,103 @@
 # LLM Cost Optimization Orchestration
 
-**Multi-agent, multi-vendor LLM orchestration that reduces human emotional friction through intelligent task decomposition and friction detection.**
+**Stop paying premium prices for every AI query. Get better answers at 70% lower cost through intelligent multi-model orchestration.**
 
-## Core Innovation: Emotional Friction Mapping
+## The Problem: Single Point of Failure
 
-**Where AI models show friction = Where humans feel frustration**
+Using ChatGPT or Claude directly means:
+- Paying premium prices for simple tasks
+- Trusting one model's answer without verification
+- No way to know if it hallucinated
+- Missing better approaches the model didn't consider
 
-This system maps AI model friction to human emotional/cognitive friction. When different models (from different vendors with different training) disagree or struggle, they're surfacing the same micro-frustrations that accumulate during human task execution:
-- Uncertainty about the right approach
-- Confusion from too many options
-- Doubt about correctness
-- Overwhelm from complexity
-- Anxiety about missing something critical
+## The Solution: Multi-Model Orchestration
 
-**This is what we're using AI to help with** - not just task completion, but emotional labor reduction.
+Break down requests, route to optimal models, cross-check answers, show your work.
+
+**Core benefits:**
+- **70-80% cost savings** - Use cheap models for simple tasks, premium only where needed
+- **Built-in verification** - Multiple models cross-check each other
+- **Warning flags** - See where models disagree (that's valuable intel)
+- **Time saved** - Automation handles research + verification you'd do manually
+- **Full transparency** - See exactly how your answer was made
 
 ### How It Works
 
 1. **Decompose** - Break complex prompts into discrete subtasks using a cheap model
-2. **Route** - Assign each subtask to the optimal model/provider based on learning
+2. **Route** - Assign each subtask to the optimal model/provider based on task complexity
 3. **Execute** - Run subtasks in parallel across multiple vendors (Anthropic, OpenAI, etc.)
-4. **Detect Friction** - Analyze where models show cognitive variance (different approaches, uncertainty, contradictions)
-5. **Map to Human Experience** - Translate AI friction into human emotions:
-   - Model disagreement → Human uncertainty
-   - Multiple approaches → Confusion/choice paralysis
-   - Low confidence → Doubt and second-guessing
-   - Long responses → Overwhelm
-6. **Verify** - Run basic hallucination/error checks:
+4. **Cross-Check** - Compare responses to detect disagreements and contradictions
+5. **Verify** - Run automated quality checks:
    - Factual consistency across models
    - Logical coherence
-   - Specificity (not vague fabrications)
+   - Specificity (detect vague/hallucinated content)
    - Grounding in concrete details
-   - Cross-model agreement patterns
-7. **Surface Insights** - Show users what micro-frustrations the AI handled for them
-8. **Learn** - Shadow mode captures which frictions were valuable vs noise
+   - Cross-model agreement scoring
+6. **Flag Warnings** - Surface disagreements as quality signals
+7. **Synthesize** - Combine verified results into polished answer
+8. **Learn** - System improves routing decisions based on outcomes
 
 ### Key Benefits
 
-- **Emotional Labor Reduction** - System handles uncertainty, doubt, and overwhelm that would drain human focus
-- **Micro-Frustration Detection** - Surfaces the small annoyances that accumulate:
-  - "Not sure which approach is right"
-  - "Too many options to consider"
-  - "Might be missing something important"
-  - "This is taking longer than expected"
-- **Transparent Difficulty** - Processing time reflects genuine complexity, not inefficiency
-- **Hallucination Prevention** - 5 basic verification checks across multi-vendor responses
-- **Human-Centered Value** - Shows users: "You saved X hours and avoided feeling Y emotions"
-- **Cost Optimization** - Achieve comparable results at fraction of frontier model costs
+**Cost Savings**
+- 70-80% cheaper than using premium models for everything
+- Pay-per-use pricing (not flat subscription)
+- Automatic routing to cheapest suitable model
+
+**Quality Assurance**
+- Multi-model cross-checking catches errors
+- 5 automated verification checks
+- Warning flags when models disagree
+- No single point of failure
+
+**Time Savings**
+- Parallel processing across models
+- Automated verification (no manual fact-checking needed)
+- Shows what research it handled for you
+
+**Transparency**
+- See exactly which models were used
+- View disagreements and why they matter
+- Full cost breakdown
+- Progressive disclosure (simple view → detailed technical report)
 
 ## Architecture
 
 ```
 User Prompt
   ↓
-Decomposer (cheap model) → Subtasks
+Decomposer (cheap model) → Break into subtasks
   ↓
-Learning Router → Assign models from different vendors
+Learning Router → Assign optimal model to each task
+  │  ├─ Simple tasks → Haiku ($)
+  │  ├─ Medium tasks → Sonnet/GPT-4o ($$)
+  │  └─ Complex tasks → Opus ($$$)
   ↓
-Multi-Provider Executor → Parallel execution across vendors
+Multi-Provider Executor → Parallel execution
   ↓
-Friction Detector → Analyze where models show cognitive variance
+Quality Analyzer → Cross-check responses
+  │  ├─ Detect disagreements
+  │  ├─ Flag contradictions
+  │  └─ Identify quality issues
   ↓
-Emotional Mapper → Translate AI friction to human emotions
-  │  ├─ What would cause human uncertainty?
-  │  ├─ What micro-frustrations would accumulate?
-  │  └─ How much cognitive load + time saved?
-  ↓
-Verification Checks → Basic hallucination/error detection
+Verification Checks → Automated quality assurance
   │  ├─ Factual consistency
   │  ├─ Logical coherence
   │  ├─ Specificity check
   │  ├─ Grounding verification
   │  └─ Cross-model agreement
   ↓
-Result Aggregator → Synthesize with friction insights
+Result Synthesizer → Combine verified results
   ↓
-Response with Transparency
-  │  ├─ The answer
-  │  ├─ What friction was detected
-  │  ├─ What human emotions/frustrations were addressed
-  │  ├─ Verification check results
-  │  ├─ Processing time explanation
-  │  └─ Cost savings vs baseline
+Transparent Response
+  │  ├─ Polished answer
+  │  ├─ Warning flags (if any)
+  │  ├─ Verification results
+  │  ├─ Time saved estimate
+  │  ├─ Cost breakdown
+  │  └─ Full technical details (on demand)
   ↓
-Shadow Learning → Capture valuable friction patterns
+Learning System → Improve routing over time
 ```
 
 ## Use Cases
@@ -153,59 +167,76 @@ curl -X POST http://localhost:8000/api/v1/execute \
 
 ✅ Backend API with FastAPI
 ✅ Prompt decomposition service
-✅ Learning-based task router with shadow mode
+✅ Learning-based task router
 ✅ Multi-provider execution via OpenRouter
-✅ **Friction detection system** - analyzes model cognitive variance
-✅ **Emotional friction mapper** - maps AI friction to human emotions
-✅ **5 verification checks** - hallucination/error detection
-✅ **Human-centered response format** - shows what frustrations were handled
-✅ Result aggregation with friction insights
+✅ **Quality analyzer** - cross-checks model responses
+✅ **5 automated verification checks** - detect errors/hallucinations
+✅ **Warning flag system** - surface model disagreements
+✅ Result synthesis with quality insights
 ✅ Cost comparison vs baseline
 ✅ Metrics tracking and API
+✅ Progressive disclosure response format
 
 🚧 Frontend dashboard (in progress)
-🚧 Friction visualization components
+🚧 Warning flag visualization
 🚧 Real-time processing transparency UI
 
 ## Response Format
 
-When you make a request, you receive:
-
+**Layer 1: Simple View (default)**
 ```json
 {
-  "aggregated_result": "The actual answer",
-  "human_friction_insight": {
-    "primary_emotions": ["uncertainty", "confusion"],
-    "micro_frustrations": [
-      "Not sure which approach is right",
-      "Too many options to consider"
-    ],
-    "cognitive_load": "moderate",
+  "answer": "Your polished answer here...",
+  "summary": {
+    "models_used": 3,
+    "verification_passed": true,
+    "warnings": 0,
     "time_saved_hours": 2.5,
-    "user_message": "This task has moderate complexity. The AI is managing challenges like: Not sure which approach is right, Too many options to consider. This would typically take 2.5 hours of focused human effort."
-  },
-  "verification_checks": [
-    {"check_type": "factual_consistency", "passed": true, "confidence": 0.87},
-    {"check_type": "logical_coherence", "passed": true, "confidence": 0.92}
-  ],
-  "friction_points": [
-    {
-      "location": "methodology",
-      "description": "Different approaches suggested",
-      "severity": "moderate",
-      "models_involved": ["anthropic/claude-3-haiku", "openai/gpt-4o"],
-      "human_impact": "Choice paralysis from multiple valid options."
-    }
-  ],
-  "processing_note": "Your request was decomposed into 3 specialized subtasks. The system detected 2 friction points where different models showed cognitive variance - this mirrors the difficulty a human would experience. Estimated time saved: 2.5 hours.",
-  "cost_savings_percent": 78.3
+    "cost": 0.03,
+    "cost_savings_percent": 78.3
+  }
 }
 ```
 
+**Layer 2: Detailed View (expandable)**
+```json
+{
+  "answer": "Your polished answer...",
+  "orchestration": {
+    "subtasks": [
+      {"task": "Security analysis", "model": "claude-3-5-sonnet", "time": 12.4},
+      {"task": "Performance comparison", "model": "gpt-4o", "time": 8.1},
+      {"task": "Best practices", "model": "claude-3-haiku", "time": 3.8}
+    ],
+    "verification_checks": [
+      {"type": "factual_consistency", "passed": true, "confidence": 0.87},
+      {"type": "logical_coherence", "passed": true, "confidence": 0.92},
+      {"type": "specificity", "passed": true, "confidence": 0.89}
+    ],
+    "warnings": [
+      {
+        "type": "model_disagreement",
+        "description": "Models disagree on scalability threshold",
+        "models": ["claude-3-5-sonnet", "gpt-4o"],
+        "details": "Claude: bottleneck at 10k users | GPT: handles 10k+ fine"
+      }
+    ],
+    "cost_breakdown": {
+      "total": 0.03,
+      "baseline": 0.14,
+      "savings": 0.11
+    }
+  }
+}
+```
+
+**Layer 3: Full Technical Report (power users)**
+Complete transparency with all model responses, verification details, and routing decisions.
+
 ## Next Steps
 
-1. Build frontend dashboard with friction visualization
-2. Enhance learning system to identify "valuable friction" patterns over time
-3. Add iterative refinement mode where high-friction points trigger deeper analysis
-4. Integrate user feedback to improve emotional mapping accuracy
-5. Add real-time processing transparency (show what's happening as it happens) 
+1. Build frontend dashboard with warning flag visualization
+2. Enhance learning system to improve routing accuracy over time
+3. Add iterative refinement mode for high-complexity queries
+4. Integrate user feedback to improve quality detection
+5. Add real-time processing transparency (show what's happening live) 
