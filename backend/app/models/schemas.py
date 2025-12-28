@@ -69,6 +69,33 @@ class SubTaskResult(BaseModel):
     error: Optional[str] = None
 
 
+class FrictionPoint(BaseModel):
+    """A point of friction detected in model responses"""
+    location: str
+    description: str
+    severity: str
+    models_involved: List[str]
+    human_impact: str  # What this means for human experience
+
+
+class HumanFrictionInsight(BaseModel):
+    """Insight into human emotional/cognitive friction"""
+    primary_emotions: List[str]  # uncertainty, confusion, doubt, etc.
+    micro_frustrations: List[str]  # Specific small frustrations addressed
+    cognitive_load: str  # low, moderate, high, excessive
+    time_saved_hours: float
+    support_provided: List[str]
+    user_message: str  # Empathetic message about task difficulty
+
+
+class VerificationCheck(BaseModel):
+    """Basic hallucination/error verification check"""
+    check_type: str  # factual_consistency, logical_coherence, etc.
+    passed: bool
+    confidence: float
+    evidence: str
+
+
 class ExecutionResponse(BaseModel):
     """Response from full orchestrated execution"""
     request_id: str
@@ -82,6 +109,12 @@ class ExecutionResponse(BaseModel):
     cost_savings: float
     cost_savings_percent: float
     timestamp: datetime
+
+    # Friction analysis
+    friction_points: Optional[List[FrictionPoint]] = None
+    verification_checks: Optional[List[VerificationCheck]] = None
+    human_friction_insight: Optional[HumanFrictionInsight] = None
+    processing_note: Optional[str] = None  # Explain why processing took time
 
 
 class FeedbackRequest(BaseModel):
