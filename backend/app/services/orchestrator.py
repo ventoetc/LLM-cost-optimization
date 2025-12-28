@@ -1,7 +1,7 @@
 """Main orchestration service that coordinates all components"""
 import uuid
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.schemas import (
