@@ -1,6 +1,10 @@
-# LLM Cost Optimization Orchestration
+# LLM Cost Optimization
 
-**Stop paying premium prices for every AI query. Get better answers at 70% lower cost through intelligent multi-model orchestration.**
+**Open-source intelligent routing for multi-model LLM orchestration. Save 70% on costs while improving quality through cross-model verification.**
+
+🆓 **Self-host with your own API keys** | 🚀 **Premium managed service available**
+
+---
 
 ## The Problem: Single Point of Failure
 
@@ -10,9 +14,16 @@ Using ChatGPT or Claude directly means:
 - No way to know if it hallucinated
 - Missing better approaches the model didn't consider
 
-## The Solution: Multi-Model Orchestration
+## The Solution: Intelligent Multi-Model Routing
 
-Break down requests, route to optimal models, cross-check answers, show your work.
+**Open source system that:**
+- Decomposes prompts into optimal subtasks
+- Routes each piece to the best model for the job (cheap → expensive only when needed)
+- Cross-checks responses across different vendors
+- Flags disagreements as quality signals
+- Shows complete transparency into how answers were built
+
+**You save 70-80% vs using premium models for everything, with BETTER quality through verification.**
 
 **Core benefits:**
 - **70-80% cost savings** - Use cheap models for simple tasks, premium only where needed
@@ -122,27 +133,38 @@ Measures cost and quality against using a single premium frontier model (Claude 
 
 ## Quick Start
 
-### Backend Setup
+### Self-Hosted (Docker - Recommended)
+
+```bash
+# Clone repo
+git clone https://github.com/ventoetc/LLM-cost-optimization.git
+cd LLM-cost-optimization
+
+# Configure API keys
+cp backend/.env.example backend/.env
+# Edit .env and add your OPENROUTER_API_KEY
+
+# Start everything
+docker-compose up -d
+
+# Verify
+curl http://localhost:8000/health
+```
+
+**That's it!** API runs at `http://localhost:8000`, frontend at `http://localhost:3000`
+
+**See [DEPLOYMENT.md](DEPLOYMENT.md) for production setup, cloud deployment, scaling, etc.**
+
+### Local Development (Python)
 
 ```bash
 cd backend
-
-# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+source venv/bin/activate
 pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env and add your OPENROUTER_API_KEY
-
-# Run the server
+cp .env.example .env  # Add your API keys
 python main.py
 ```
-
-Server will start at `http://localhost:8000`
 
 ### API Endpoints
 
@@ -163,23 +185,50 @@ curl -X POST http://localhost:8000/api/v1/execute \
   }'
 ```
 
-## Current Status
+## Deployment Options
 
-✅ Backend API with FastAPI
-✅ Prompt decomposition service
-✅ Learning-based task router
-✅ Multi-provider execution via OpenRouter
-✅ **Quality analyzer** - cross-checks model responses
-✅ **5 automated verification checks** - detect errors/hallucinations
-✅ **Warning flag system** - surface model disagreements
-✅ Result synthesis with quality insights
-✅ Cost comparison vs baseline
-✅ Metrics tracking and API
-✅ Progressive disclosure response format
+### Option 1: Self-Hosted (Free, Open Source)
 
-🚧 Frontend dashboard (in progress)
-🚧 Warning flag visualization
-🚧 Real-time processing transparency UI
+**Bring your own API keys:**
+- OpenRouter account (access to 100+ models)
+- Or direct: Anthropic, OpenAI, etc.
+
+**What you get:**
+✅ Full orchestration engine
+✅ Intelligent routing & decomposition
+✅ Quality verification (5 automated checks)
+✅ Cost tracking & comparison
+✅ Warning flag system
+✅ Complete transparency & audit logs
+
+**What you manage:**
+- Infrastructure (Docker/cloud hosting)
+- Your own API keys & usage
+- Data storage & backups
+
+**Cost:** Infrastructure only (~$10-20/month for small-medium usage)
+
+### Option 2: Managed Premium Service (Coming Soon)
+
+**We handle everything:**
+- Infrastructure & scaling
+- API key management (volume discounts passed through)
+- Advanced learning system (improves with usage)
+- Team collaboration features
+- Priority support & SLAs
+
+**Pricing:**
+- OpenRouter costs + 10% orchestration margin
+- Still 60-70% cheaper than using Opus/GPT-4 directly
+- Free tier for evaluation
+
+**Premium features:**
+- Advanced analytics dashboard
+- Custom routing rules
+- Team workspaces
+- Compliance audit trails
+- Real-time processing transparency
+- Enterprise SSO & security
 
 ## Response Format
 
@@ -233,10 +282,66 @@ curl -X POST http://localhost:8000/api/v1/execute \
 **Layer 3: Full Technical Report (power users)**
 Complete transparency with all model responses, verification details, and routing decisions.
 
-## Next Steps
+## Roadmap
 
-1. Build frontend dashboard with warning flag visualization
-2. Enhance learning system to improve routing accuracy over time
-3. Add iterative refinement mode for high-complexity queries
-4. Integrate user feedback to improve quality detection
-5. Add real-time processing transparency (show what's happening live) 
+**Open Source (Free):**
+- [x] Intelligent decomposition & routing
+- [x] Multi-vendor orchestration
+- [x] Quality verification (5 checks)
+- [x] Warning flag system
+- [x] Cost tracking
+- [ ] Frontend dashboard UI
+- [ ] Advanced analytics
+
+**Premium Managed Service:**
+- [ ] Hosted infrastructure
+- [ ] Team collaboration
+- [ ] Advanced learning system
+- [ ] Custom routing rules
+- [ ] Real-time transparency UI
+- [ ] Enterprise features (SSO, audit logs, SLAs)
+
+---
+
+## Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+**Areas we need help:**
+- Frontend development (React dashboard)
+- Model provider integrations
+- Documentation & examples
+- Testing & quality assurance
+
+---
+
+## License
+
+**MIT License** - Free to use, modify, and distribute.
+
+See [LICENSE](LICENSE) for details.
+
+Commercial use is allowed. If you build a business on this, consider supporting via GitHub Sponsors or using our managed service.
+
+---
+
+## Why Open Source?
+
+**We believe:**
+- AI orchestration should be transparent and auditable
+- Users should own their data and infrastructure
+- The community builds better software together
+- Open source proves the value before asking for payment
+
+**Our business model:**
+- Open source core = community growth + trust
+- Managed service = convenience for teams/enterprises
+- Everyone wins: hobbyists self-host, companies pay for managed
+
+---
+
+## Star History
+
+If this project helps you, consider giving it a ⭐ on GitHub!
+
+It helps others discover the project and motivates continued development. 
