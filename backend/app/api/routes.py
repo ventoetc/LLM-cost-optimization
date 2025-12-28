@@ -13,12 +13,93 @@ from app.models.schemas import (
     MetricsSummary,
     MetricsDetail,
     DecompositionRequest,
-    DecompositionResponse
+    DecompositionResponse,
+    ClarificationResponse,
+    ExplorationResponse,
+    ContextNeededResponse
 )
 from app.services.orchestrator import Orchestrator
 from app.services.decomposer import PromptDecomposer
+from app.services.input_processor import InputProcessor
 
 router = APIRouter()
+
+
+@router.post("/query")
+async def intelligent_query(
+    request: ExecutionRequest,
+    db: AsyncSession = Depends(get_session)
+):
+    """
+    Intelligent query endpoint with input processing
+
+    This endpoint:
+    1. Analyzes input for clarity/ambiguity
+    2. If clear enough, executes directly
+    3. If vague, asks clarifying questions
+    4. If exploratory, provides guidance
+    5. Handles attachments for context
+
+    This is the recommended endpoint for most users.
+    """
+    processor = InputProcessor()
+
+    # Convert attachments to dict format
+    attachments = None
+    if request.attachments:
+        attachments = [att.dict() for att in request.attachments]
+
+    # Process input
+    processed = await processor.process_input(
+        request.prompt,
+        attachments,
+        request.conversation_history
+    )
+
+    # Handle based on processing mode
+    if processed['mode'] == 'execute':
+        # Clear enough - execute directly
+        orchestrator = Orchestrator(db)
+        enhanced_request = ExecutionRequest(
+            prompt=processed['enhanced_prompt'],
+            context=request.context,
+            user_id=request.user_id,
+            attachments=request.attachments,
+            conversation_history=request.conversation_history
+        )
+        return await orchestrator.execute_request(enhanced_request)
+
+    elif processed['mode'] == 'clarify':
+        # Need clarification
+        return ClarificationResponse(
+            original_prompt=processed['original_prompt'],
+            message=processed['clarifications']['message'],
+            questions=processed['clarifications']['questions'],
+            quick_options=processed['clarifications'].get('quick_options'),
+            analysis=processed['analysis'].__dict__
+        )
+
+    elif processed['mode'] == 'explore':
+        # Exploration mode
+        return ExplorationResponse(
+            original_prompt=processed['original_prompt'],
+            message=processed['guidance']['message'],
+            suggestions=processed['guidance']['suggestions'],
+            next_steps=processed['guidance']['next_steps'],
+            analysis=processed['analysis'].__dict__
+        )
+
+    else:  # context_needed
+        # Need more context
+        return ContextNeededResponse(
+            original_prompt=processed['original_prompt'],
+            message="I need a bit more context to help you effectively.",
+            missing_context=processed['missing_context'],
+            suggestions=[
+                f"Please provide: {ctx.replace('_', ' ')}"
+                for ctx in processed['missing_context']
+            ]
+        )
 
 
 @router.post("/execute", response_model=ExecutionResponse)
@@ -27,11 +108,12 @@ async def execute_request(
     db: AsyncSession = Depends(get_session)
 ):
     """
-    Execute a full orchestrated LLM request
+    Direct execution endpoint (bypasses input processing)
 
-    This is the main endpoint - it decomposes the prompt, routes subtasks
-    to optimal models, executes in parallel, and returns aggregated results
-    with cost comparison.
+    Use this when you have a clear, well-defined request and don't
+    need the input processor's analysis.
+
+    For most cases, use /query instead.
     """
     orchestrator = Orchestrator(db)
     return await orchestrator.execute_request(request)

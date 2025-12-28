@@ -49,11 +49,22 @@ class DecompositionResponse(BaseModel):
     decomposition_time: float
 
 
+class Attachment(BaseModel):
+    """File attachment for context"""
+    type: str  # code, image, pdf, document, text
+    filename: Optional[str] = None
+    content: Optional[str] = None
+    url: Optional[str] = None
+    language: Optional[str] = None  # For code files
+
+
 class ExecutionRequest(BaseModel):
     """Request to execute a full orchestrated query"""
     prompt: str
     context: Optional[Dict[str, Any]] = None
     user_id: Optional[str] = None
+    attachments: Optional[List[Attachment]] = None
+    conversation_history: Optional[List[Dict]] = None
 
 
 class SubTaskResult(BaseModel):
@@ -145,3 +156,32 @@ class MetricsDetail(BaseModel):
     model_usage: Dict[str, int]
     task_type_distribution: Dict[str, int]
     cost_over_time: List[Dict[str, Any]]
+
+
+class ClarificationResponse(BaseModel):
+    """Response when input needs clarification"""
+    mode: str = "clarify"
+    original_prompt: str
+    message: str
+    questions: List[str]
+    quick_options: Optional[List[str]] = None
+    analysis: Dict[str, Any]
+
+
+class ExplorationResponse(BaseModel):
+    """Response for exploration/ideation queries"""
+    mode: str = "explore"
+    original_prompt: str
+    message: str
+    suggestions: List[str]
+    next_steps: List[str]
+    analysis: Dict[str, Any]
+
+
+class ContextNeededResponse(BaseModel):
+    """Response when more context is needed"""
+    mode: str = "context_needed"
+    original_prompt: str
+    message: str
+    missing_context: List[str]
+    suggestions: List[str]
